@@ -2,8 +2,20 @@
 // All API calls go through this module. Provides consistent error handling
 // and headers. Exposes functions globally for use by dashboard.js and whiteboard.js.
 
+// Get API base URL (works for both same-domain and separate deployments)
+const API_BASE = (() => {
+  if (typeof process !== 'undefined' && process.env.REACT_APP_API_URL) {
+    return process.env.REACT_APP_API_URL;
+  }
+  // Default to current origin if on same domain, otherwise use production URL
+  return window.location.origin;
+})();
+
 const apiFetch = async (url, options = {}) => {
-  const res = await fetch(url, {
+  // If url starts with '/', prepend API_BASE
+  const fullUrl = url.startsWith('http') ? url : `${API_BASE}${url}`;
+  
+  const res = await fetch(fullUrl, {
     headers: { 'Content-Type': 'application/json' },
     ...options,
   });
