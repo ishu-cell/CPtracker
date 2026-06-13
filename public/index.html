@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Σcp.track — AI-powered Codeforces coaching platform. Track problems, analyze weaknesses, and get personalized recommendations to increase your rating." />
+  <title>Σcp.track — Codeforces Coach</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+
+  <link href="style.css" rel="stylesheet" />
+  <link href="css/whiteboard.css" rel="stylesheet" />
+  <link href="css/layout.css" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     SIGN-IN (shown when not authenticated)
+     ═══════════════════════════════════════════════════════ -->
+<div id="sign-in-container" style="display: flex; justify-content: center; align-items: center; min-height: 100vh;"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     APP SHELL (shown after authentication)
+     ═══════════════════════════════════════════════════════ -->
+<div id="app-content" style="display: none;">
+  <div class="app-shell">
+
+    <!-- ── SIDEBAR NAVIGATION ── -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="cp-logo__wordmark">
+          <span class="cp-logo__sigma">Σ</span>
+          <span class="cp-logo__name-cp">cp</span>
+          <span class="cp-logo__dot">.</span>
+          <span class="cp-logo__name-track">track</span>
+        </div>
+        <span class="cp-logo__sub">Codeforces coach</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">main</div>
+        <a class="nav-item active" data-page="dashboard" href="#/dashboard">
+          <span class="nav-icon">📋</span> Dashboard
+        </a>
+        <a class="nav-item" data-page="profile" href="#/profile">
+          <span class="nav-icon">👤</span> CF Profile
+        </a>
+        <a class="nav-item" data-page="analytics" href="#/analytics">
+          <span class="nav-icon">📊</span> Analytics
+        </a>
+
+        <div class="sidebar-section-label">coaching</div>
+        <a class="nav-item" data-page="weaknesses" href="#/weaknesses">
+          <span class="nav-icon">🎯</span> Weaknesses
+        </a>
+        <a class="nav-item" data-page="recommend" href="#/recommend">
+          <span class="nav-icon">💡</span> Recommendations
+        </a>
+        <a class="nav-item" data-page="training" href="#/training">
+          <span class="nav-icon">🔥</span> Daily Training
+        </a>
+        <a class="nav-item" data-page="contest" href="#/contest">
+          <span class="nav-icon">🏆</span> Contest Coach
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-sync-status" id="sync-status">
+          <!-- <span class="sync-dot"></span>
+          <span>System ready</span> -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT AREA ── -->
+    <div class="main-area">
+
+      <!-- ════════════════════════════════════════════════
+           PAGE: DASHBOARD (existing, fully functional)
+           ════════════════════════════════════════════════ -->
+      <div id="page-dashboard" class="page-section active">
+        <div class="page">
+
+          <header>
+            <div class="cp-logo">
+              <div class="cp-logo__icon">
+                <div class="cp-logo__icon-bg"></div>
+                <svg class="cp-logo__svg" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <line x1="37" y1="10" x2="15" y2="10" stroke="#a78bfa" stroke-width="1.3" stroke-linecap="round"/>
+                  <line x1="15" y1="10" x2="27" y2="26" stroke="#a78bfa" stroke-width="1.3" stroke-linecap="round"/>
+                  <line x1="27" y1="26" x2="15" y2="42" stroke="#a78bfa" stroke-width="1.3" stroke-linecap="round"/>
+                  <line x1="15" y1="42" x2="37" y2="42" stroke="#a78bfa" stroke-width="1.3" stroke-linecap="round" class="e-dash" stroke-dasharray="4 3"/>
+                  <line x1="37" y1="10" x2="27" y2="26" stroke="#a78bfa" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+                  <line x1="27" y1="26" x2="37" y2="42" stroke="#a78bfa" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+                  <circle class="n-c1" cx="37" cy="10" r="3.5" fill="#7c3aed"/>
+                  <circle class="n-c2" cx="15" cy="10" r="3.5" fill="#7c3aed"/>
+                  <circle class="n-c3" cx="15" cy="42" r="3.5" fill="#7c3aed"/>
+                  <circle class="n-c4" cx="37" cy="42" r="3.5" fill="#7c3aed"/>
+                  <circle class="n-center" cx="27" cy="26" r="4.5" fill="#c4b5fd"/>
+                  <circle cx="27" cy="26" r="2.2" fill="#f5f3ff"/>
+                </svg>
+              </div>
+              <div class="cp-logo__text">
+                <div class="cp-logo__wordmark">
+                  <span class="cp-logo__sigma">Σ</span>
+                  <span class="cp-logo__name-cp">cp</span>
+                  <span class="cp-logo__dot">.</span>
+                  <span class="cp-logo__name-track">track</span>
+                </div>
+                <span class="cp-logo__sub">Problem dashboard</span>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 20px;">
+              <div class="stats-row">
+                <div class="stat-chip">
+                  <span class="stat-val blue" id="stat-total">—</span>
+                  <span class="stat-lbl">Total</span>
+                </div>
+                <div class="stat-chip">
+                  <span class="stat-val green" id="stat-solved">—</span>
+                  <span class="stat-lbl">Solved</span>
+                </div>
+                <div class="stat-chip">
+                  <span class="stat-val gold" id="stat-cm">—</span>
+                  <span class="stat-lbl">CM+ tier</span>
+                </div>
+              </div>
+              <div id="user-button"></div>
+            </div>
+          </header>
+
+          <div class="section-label"><span>// add problem</span></div>
+
+          <div class="form-panel">
+            <form id="add-form" autocomplete="off">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="f-title">Problem title</label>
+                  <input id="f-title" type="text" placeholder="e.g. Maximum Subarray" required />
+                </div>
+                <div class="field">
+                  <label for="f-platform">Platform</label>
+                  <select id="f-platform">
+                    <option value="Codeforces">Codeforces</option>
+                    <option value="LeetCode">LeetCode</option>
+                    <option value="AtCoder">AtCoder</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="f-rating">Rating</label>
+                  <input id="f-rating" type="number" min="0" max="4000" placeholder="e.g. 1800" />
+                </div>
+                <div class="field">
+                  <label for="f-status">Status</label>
+                  <select id="f-status">
+                    <option value="attempted">Attempted</option>
+                    <option value="solved">Solved</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-footer">
+                <button class="btn-add" type="submit" id="btn-submit">+ Add Problem</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="section-label"><span>// problems</span></div>
+
+          <div class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="solved">Solved</button>
+            <button class="filter-btn" data-filter="attempted">Attempted</button>
+            <button class="filter-btn" data-filter="cm">CM+ tier</button>
+            <div class="search-wrap">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              </svg>
+              <input id="search-input" type="text" placeholder="Search problems…" />
+            </div>
+          </div>
+
+          <div id="problems-grid"></div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════
+           PAGE: CF PROFILE (Phase 1)
+           ════════════════════════════════════════════════ -->
+      <div id="page-profile" class="page-section">
+        <div class="page">
+          <div class="coming-soon">
+            <div class="coming-soon-icon">👤</div>
+            <h2>Codeforces Profile</h2>
+            <p>Connect your Codeforces handle to sync your rating, contest history, and submission data automatically.</p>
+            <span class="phase-tag">Phase 1 — Coming Next</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════
+           PAGE: ANALYTICS (Phase 2)
+           ════════════════════════════════════════════════ -->
+      <div id="page-analytics" class="page-section">
+        <div class="page">
+          <div class="coming-soon">
+            <div class="coming-soon-icon">📊</div>
+            <h2>Rating Analytics</h2>
+            <p>Rating growth graphs, contest performance trends, problem distribution by tag and difficulty, submission heatmaps, and more.</p>
+            <span class="phase-tag">Phase 2</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════
+           PAGE: WEAKNESSES (Phase 3)
+           ════════════════════════════════════════════════ -->
+      <div id="page-weaknesses" class="page-section">
+        <div class="page">
+          <div class="coming-soon">
+            <div class="coming-soon-icon">🎯</div>
+            <h2>Weakness Detection</h2>
+            <p>Automatically identifies your weak topics, neglected areas, and over-practiced tags based on your submission history.</p>
+            <span class="phase-tag">Phase 3</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════
+           PAGE: RECOMMENDATIONS (Phase 4)
+           ════════════════════════════════════════════════ -->
+      <div id="page-recommend" class="page-section">
+        <div class="page">
+          <div class="coming-soon">
+            <div class="coming-soon-icon">💡</div>
+            <h2>Problem Recommendations</h2>
+            <p>Personalized problem suggestions optimized to maximize your rating growth, based on your weaknesses and current level.</p>
+            <span class="phase-tag">Phase 4</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════
+           PAGE: DAILY TRAINING (Phase 5)
+           ════════════════════════════════════════════════ -->
+      <div id="page-training" class="page-section">
+        <div class="page">
+          <div class="coming-soon">
+            <div class="coming-soon-icon">🔥</div>
+            <h2>Daily Training</h2>
+            <p>Personalized daily challenges, streak tracking, difficulty adaptation, and a training calendar to build consistent practice habits.</p>
+            <span class="phase-tag">Phase 5</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════
+           PAGE: CONTEST COACH (Phase 7)
+           ════════════════════════════════════════════════ -->
+      <div id="page-contest" class="page-section">
+        <div class="page">
+          <div class="coming-soon">
+            <div class="coming-soon-icon">🏆</div>
+            <h2>Contest Coach</h2>
+            <p>Pre-contest warm-up recommendations, post-contest upsolving plans, performance diagnostics, and improvement analysis.</p>
+            <span class="phase-tag">Phase 7</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main-area -->
+  </div><!-- /app-shell -->
+
+  <!-- ── WHITEBOARD MODAL (global, works across pages) ── -->
+  <div id="wb-modal">
+    <div class="wb-header">
+      <div style="font-weight: 700; font-size: 18px;" id="wb-title">Whiteboard</div>
+      <div class="wb-tools">
+        <button class="wb-btn wb-btn-clear" id="wb-clear">Clear</button>
+        <button class="wb-btn wb-btn-close" id="wb-close">Cancel</button>
+        <button class="wb-btn wb-btn-save" id="wb-save">Save Drawing</button>
+      </div>
+    </div>
+    <div class="wb-canvas-container" id="wb-container">
+
+      <div class="wb-floating-toolbar">
+        <div class="wb-tool-group">
+          <button class="tool-icon active" id="mode-draw" title="Draw">✏️</button>
+          <button class="tool-icon" id="mode-erase" title="Erase">🧽</button>
+          <button class="tool-icon" id="mode-select" title="Select / Move">🖱️</button>
+          <button class="tool-icon" id="mode-pan" title="Pan Canvas">✋</button>
+        </div>
+
+        <div class="wb-tool-group">
+          <button class="tool-icon" id="add-text" title="Add Text"><b>T</b></button>
+          <button class="tool-icon" id="add-line" title="Line">╱</button>
+          <button class="tool-icon" id="add-arrow" title="Arrow">↗</button>
+          <button class="tool-icon" id="add-divider" title="Divider">—</button>
+          <button class="tool-icon" id="add-rect" title="Rectangle">⬜</button>
+          <button class="tool-icon" id="add-oval" title="Oval">⭕</button>
+          <button class="tool-icon" id="add-rhombus" title="Rhombus">◇</button>
+          <button class="tool-icon" id="add-triangle" title="Triangle">🔺</button>
+          <button class="tool-icon" id="add-matrix" title="Matrix">▦</button>
+        </div>
+
+        <div class="wb-tool-group" id="color-picker">
+          <div class="color-swatch active" style="background: #10b981;" data-color="#10b981"></div>
+          <div class="color-swatch" style="background: #38bdf8;" data-color="#38bdf8"></div>
+          <div class="color-swatch" style="background: #f43f5e;" data-color="#f43f5e"></div>
+          <div class="color-swatch" style="background: #facc15;" data-color="#facc15"></div>
+          <div class="color-swatch" style="background: #f8fafc;" data-color="#f8fafc"></div>
+        </div>
+
+        <div class="wb-tool-group">
+          <span style="color:#cbd5e1; font-size:12px; font-family: 'JetBrains Mono', monospace;">Size</span>
+          <input type="range" id="brush-size" min="1" max="20" value="4">
+        </div>
+      </div>
+
+      <canvas id="wb-canvas"></canvas>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCRIPTS
+     ═══════════════════════════════════════════════════════ -->
+<script src="js/api.js"></script>
+<script src="js/pages/dashboard.js"></script>
+<script src="js/pages/profile.js"></script>
+<script src="js/pages/analytics.js"></script>
+<script src="js/pages/weaknesses.js"></script>
+<script src="js/pages/recommend.js"></script>
+<script src="js/pages/training.js"></script>
+<script src="js/pages/contest.js"></script>
+<script src="whiteboard.js"></script>
+<script src="js/router.js"></script>
+
+<script>
+  const PUBLISHABLE_KEY = "pk_test_c291Z2h0LWNhbWVsLTkyLmNsZXJrLmFjY291bnRzLmRldiQ";
+
+  const script = document.createElement('script');
+  script.setAttribute('data-clerk-publishable-key', PUBLISHABLE_KEY);
+  script.async = true;
+
+  script.src = `https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js`;
+  script.crossOrigin = "anonymous";
+
+  script.addEventListener('load', async function () {
+    await window.Clerk.load({
+      appearance: {
+        variables: { colorBackground: "#1e293b", colorText: "#f8fafc", colorPrimary: "#2563eb" }
+      }
+    });
+
+    if (window.Clerk.user) {
+      document.getElementById('sign-in-container').style.display = 'none';
+      document.getElementById('app-content').style.display = 'block';
+      window.Clerk.mountUserButton(document.getElementById('user-button'));
+
+      // Initialize dashboard data
+      window.dashboardInit();
+
+      // Initialize SPA router
+      window.initRouter();
+    } else {
+      document.getElementById('app-content').style.display = 'none';
+
+      window.Clerk.mountSignIn(document.getElementById('sign-in-container'), {
+        fallbackRedirectUrl: window.location.origin,
+        signUpFallbackRedirectUrl: window.location.origin
+      });
+    }
+  });
+
+  document.body.appendChild(script);
+</script>
+
+</body>
+</html>

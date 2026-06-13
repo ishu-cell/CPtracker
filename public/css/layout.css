@@ -1,0 +1,227 @@
+/* ═══════════════════════════════════════════════════════
+   SIDEBAR NAVIGATION + APP LAYOUT
+   ═══════════════════════════════════════════════════════ */
+
+/* ── App Shell Layout ── */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-area {
+  flex: 1;
+  min-width: 0;        /* Prevent flex blowout */
+  margin-left: 240px;  /* Sidebar width */
+  transition: margin-left 0.3s var(--ease);
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background: #0c0a1e;
+  border-right: 1px solid rgba(167, 139, 250, 0.12);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow-y: auto;
+  transition: transform 0.3s var(--ease);
+}
+
+.sidebar-brand {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid rgba(167, 139, 250, 0.08);
+}
+
+.sidebar-brand .cp-logo__sigma {
+  font-size: 22px;
+}
+.sidebar-brand .cp-logo__name-cp {
+  font-size: 17px;
+  color: #f8fafc;
+}
+.sidebar-brand .cp-logo__dot {
+  font-size: 17px;
+}
+.sidebar-brand .cp-logo__name-track {
+  font-size: 17px;
+  color: #94a3b8;
+}
+.sidebar-brand .cp-logo__sub {
+  color: #64748b;
+  font-size: 8px;
+}
+
+/* ── Nav Items ── */
+.sidebar-nav {
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.sidebar-section-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #475569;
+  padding: 16px 12px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: rgba(167, 139, 250, 0.06);
+  color: #e2e8f0;
+}
+
+.nav-item.active {
+  background: rgba(124, 58, 237, 0.12);
+  color: #c4b5fd;
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: #7c3aed;
+  border-radius: 0 3px 3px 0;
+}
+
+.nav-icon {
+  font-size: 16px;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.nav-badge {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(124, 58, 237, 0.2);
+  color: #a78bfa;
+}
+
+/* ── Sidebar Footer ── */
+.sidebar-footer {
+  padding: 16px 14px;
+  border-top: 1px solid rgba(167, 139, 250, 0.08);
+}
+
+.sidebar-sync-status {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sync-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+}
+.sync-dot.syncing {
+  background: #facc15;
+  animation: pulse 1.5s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Page Sections ── */
+.page-section {
+  display: none;
+}
+.page-section.active {
+  display: block;
+}
+
+/* ── Coming Soon Placeholder ── */
+.coming-soon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+  color: var(--text-3);
+}
+
+.coming-soon-icon {
+  font-size: 48px;
+  opacity: 0.6;
+}
+
+.coming-soon h2 {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.coming-soon p {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  max-width: 400px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.coming-soon .phase-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--sigma-glow);
+  color: var(--sigma-mid);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Responsive: Collapse sidebar on small screens ── */
+@media (max-width: 860px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .main-area {
+    margin-left: 0;
+  }
+}

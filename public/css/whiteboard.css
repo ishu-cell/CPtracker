@@ -1,0 +1,29 @@
+/* ── Whiteboard Modal Styles ── */
+#wb-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.95); z-index: 1000; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+#wb-modal.show { opacity: 1; pointer-events: all; }
+.wb-header { padding: 16px 24px; background: #1e293b; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; color: white; z-index: 10; }
+.wb-tools { display: flex; gap: 10px; }
+.wb-btn { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; padding: 8px 16px; border-radius: 6px; cursor: pointer; border: none; transition: 0.2s; }
+.wb-btn-close { background: #334155; color: white; }
+.wb-btn-clear { background: #ef4444; color: white; }
+.wb-btn-save { background: #2563eb; color: white; }
+.wb-btn:hover { filter: brightness(1.1); }
+
+.wb-canvas-container { flex: 1; width: 100%; display: flex; position: relative; background: #0f172a; overflow: hidden; }
+.canvas-container { margin: 0 auto; background-image: radial-gradient(circle, #334155 1px, transparent 1px); background-size: 20px 20px; }
+.btn-draw { color: #2563eb; font-size: 14px; }
+.btn-draw:hover { background: #eff6ff; border-color: #2563eb; }
+
+/* ── Pro Toolbar Styles ── */
+.wb-floating-toolbar { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; padding: 10px 20px; border-radius: 12px; border: 1px solid #334155; display: flex; gap: 20px; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 10; }
+.wb-tool-group { display: flex; gap: 8px; align-items: center; border-right: 1px solid #334155; padding-right: 20px; }
+.wb-tool-group:last-child { border-right: none; padding-right: 0; }
+
+.tool-icon { background: transparent; border: 1px solid transparent; color: #cbd5e1; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 14px; transition: 0.2s; }
+.tool-icon.active { background: #334155; color: #38bdf8; border-color: #475569; }
+.tool-icon:hover:not(.active) { background: rgba(51, 65, 85, 0.5); }
+
+.color-swatch { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+.color-swatch.active { border-color: white; transform: scale(1.1); }
+
+#brush-size { width: 80px; accent-color: #38bdf8; cursor: pointer; }

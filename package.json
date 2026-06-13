@@ -1,0 +1,21 @@
+{
+  "name": "cp-track",
+  "version": "2.0.0",
+  "description": "Σcp.track — AI-powered Codeforces coaching platform",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "migrate": "node migrations/migrate.js"
+  },
+  "keywords": ["codeforces", "competitive-programming", "coaching"],
+  "author": "Shushant Bharti",
+  "license": "ISC",
+  "dependencies": {
+    "@clerk/express": "^2.1.23",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mysql2": "^3.22.3"
+  }
+}
