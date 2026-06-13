@@ -220,6 +220,27 @@ document.getElementById('search-input').addEventListener('input', e => {
   render();
 });
 
+/* Sync Codeforces problemset */
+document.getElementById('sync-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('sync-btn');
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '⏳ Syncing...';
+  
+  try {
+    const response = await fetch('/api/codeforces/sync', { method: 'POST' });
+    if (!response.ok) {
+      throw new Error(`Sync failed: ${response.status}`);
+    }
+    toast('✅ Codeforces problemset synced successfully!');
+  } catch (err) {
+    toast('Sync error: ' + err.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+});
+
 /* Init — called by Clerk after authentication */
 const init = async () => {
   const grid = document.getElementById('problems-grid');
