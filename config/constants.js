@@ -23,7 +23,7 @@ export const CF_API = {
 export const SYNC = {
   PROFILE_INTERVAL_MS: 30 * 60 * 1000,       // 30 minutes
   PROBLEMSET_INTERVAL_MS: 6 * 60 * 60 * 1000, // 6 hours
-  MIN_SYNC_GAP_MS: 5 * 60 * 1000,            // 5 min cooldown between manual syncs
+  MIN_SYNC_GAP_MS: 30 * 1000,                 // 30 sec cooldown for testing (set to 5 * 60 * 1000 for production)
 };
 
 // ── Codeforces rating tiers ──
