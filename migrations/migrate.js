@@ -42,23 +42,29 @@ async function getAppliedMigrations(conn) {
 }
 
 async function runMigrations() {
-  logger.info('Starting migration runner...');
+  console.log('🚀 Starting migration runner...');
 
   const conn = await createMigrationConnection();
+  console.log('✅ Database connection established');
 
   await ensureMigrationsTable(conn);
+  console.log('✅ Migrations table ready');
+
   const applied = await getAppliedMigrations(conn);
+  console.log(`📋 Found ${applied.size} previously applied migrations`);
 
   // Find all .sql files, sorted by name
   const files = fs.readdirSync(__dirname)
     .filter(f => f.endsWith('.sql'))
     .sort();
 
+  console.log(`📄 Found ${files.length} migration files to process`);
+
   let count = 0;
 
   for (const file of files) {
     if (applied.has(file)) {
-      logger.info(`  ⏭  ${file} (already applied)`);
+      console.log(`  ⏭  ${file} (already applied)`);
       continue;
     }
 
@@ -75,26 +81,28 @@ async function runMigrations() {
         [file]
       );
 
-      logger.info(`  ✅ ${file} applied successfully`);
+      console.log(`  ✅ ${file} applied successfully`);
       count++;
     } catch (err) {
-      logger.error(`  ❌ ${file} FAILED:`, { error: err.message });
+      console.error(`  ❌ ${file} FAILED:`, err.message);
       await conn.end();
       process.exit(1);
     }
   }
 
+  console.log('\n========================================');
   if (count === 0) {
-    logger.info('No new migrations to apply.');
+    console.log('✅ No new migrations to apply.');
   } else {
-    logger.info(`Applied ${count} migration(s).`);
+    console.log(`✅ Applied ${count} migration(s) successfully!`);
   }
+  console.log('========================================\n');
 
   await conn.end();
   process.exit(0);
 }
 
 runMigrations().catch(err => {
-  logger.error('Migration runner crashed:', { error: err.message });
+  console.error('❌ Migration runner crashed:', err.message);
   process.exit(1);
 });
